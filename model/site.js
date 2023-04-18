@@ -14,7 +14,7 @@ exports.register = async (siteName) => {
     let now = new Date();
     const created_at= date.format(now, 'YYYY-MM-DD');
     const siteCode = await generateSiteCode();
-    const qry = `INSERT INTO site (site_name, site_code, status, date) VALUES ('${siteName}','${siteCode}','Pending','${created_at}')`;
+    const qry = `INSERT INTO site (site_name, site_code, status, date) VALUES ('${siteName}','${siteCode}','Ongoing','${created_at}')`;
     const resp = await queryExecuter(qry);
     if(resp.status){
         return true;
@@ -66,7 +66,7 @@ exports.readAll = async () => {
 }
 
 exports.readAllPending = async () => {
-    const query = "SELECT * FROM site WHERE status = 'Pending'";
+    const query = "SELECT * FROM site WHERE status = 'Ongoing'";
     const response = await queryExecuter(query);
     if(response.status){
         if(response.data === undefined){
