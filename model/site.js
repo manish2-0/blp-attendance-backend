@@ -2,11 +2,10 @@ const queryExecuter = require('../helper/queryExecuter');
 const date = require('date-and-time');
 
 async function generateSiteCode(){
-    let num = 1;
+    let num = 234;
     const response = await queryExecuter("SELECT COUNT(site_code) as count FROM site");
     const count = response.data[0].count;
     num = num + count;
-    num = num.toString().padStart(3, '0');
     return num;
 }
 
