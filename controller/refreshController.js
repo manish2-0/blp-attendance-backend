@@ -23,6 +23,7 @@ exports.getToken = async (req, res) => {
                     if (err) {
                         const deleteToken = await refresh.deleteRefresh(refreshToken);
                         res.clearCookie('refreshJwt', { httpOnly: true, sameSite: 'None', secure: true, maxAge: process.env.COOKIE_EXPIRE_TIME_HOURS * 60 * 60 * 1000 });
+                        // res.cookie('refreshJwt', refreshToken, { httpOnly: true });
                         return res.status(403).json({ status: false, error: "Invalid Refresh Token Sent" });
                     }
                     else {
