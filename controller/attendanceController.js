@@ -163,18 +163,18 @@ exports.get = async (req, res) => {
 }
 
 exports.generateReport = async (req, res) => {
-    const month = req.body.month;
-    const year = req.body.year;
+    const fromDate = req.body.from;
+    const toDate = req.body.to;
     let flag = true;
-    let error = "Please Enter All Details";
-    if (!month) {
+    let error = "Please Enter Both Dates";
+    if (!fromDate) {
         flag = false;
     }
-    if (flag && !year) {
+    if (flag && !toDate) {
         flag = false;
     }
     if (flag) {
-        const report = await attendance.getReport(month, year);
+        const report = await attendance.getReport(fromDate, toDate);
         if (report.status) {
             if (report.data === undefined) {
                 res.status(200).json({ status: true, message: report.message });
@@ -190,4 +190,57 @@ exports.generateReport = async (req, res) => {
     else {
         res.status(200).json({ status: false, message: error });
     }
+}
+
+exports.getAttendanceAdmin = async (req, res) => {
+    const date = req.body.date;
+    let flag = true;
+    let error = "Please Enter Date";
+    if (!date) {
+        flag = false;
+    }
+    if (flag) {
+        const attendances = await attendance.readAttendanceAdmin(date);
+        if (attendances.status) {
+            if (attendances.data === undefined) {
+                res.status(200).json({ status: true, message: attendances.message });
+            }
+            else {
+                res.status(200).json({ status: true, data: attendances.data });
+            }
+        }
+        else {
+            res.status(200).json({ status: false, message: attendances.error });
+        }
+    }
+    else {
+        res.status(200).json({ status: false, message: error });
+    }
+}
+
+exports.getAttendanceSupervisor = async (req, res) => {
+    const date = req.body.date;
+    const marked_by = req.admin_id;
+    let flag = true;
+    let error = "Please Enter Date";
+    if (!date) {
+        flag = false;
+    }
+    if (flag) {
+        const attendances = await attendance.readAttendanceSupervisor(date, marked_by);
+        if (attendances.status) {
+            if (attendances.data === undefined) {
+                res.status(200).json({ status: true, message: attendances.message });
+            }
+            else {
+                res.status(200).json({ status: true, data: attendances.data });
+            }
+        }
+        else {
+            res.status(200).json({ status: false, message: attendances.error });
+        }
+    }
+    else {
+        res.status(200).json({ status: false, message: error });
+    } 
 }

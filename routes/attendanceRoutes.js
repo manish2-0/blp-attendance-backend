@@ -12,4 +12,8 @@ attendanceRouter.post("/attendance-get",authToken, verifyRole(Roles.Admin, Roles
 
 attendanceRouter.post("/attendance-report",authToken, verifyRole(Roles.Admin), attendance.generateReport);
 
+attendanceRouter.post("/attendance-admin", authToken, attendance.getAttendanceAdmin);
+
+attendanceRouter.post("/attendance-supervisor", authToken, attendance.getAttendanceSupervisor);
+
 module.exports = attendanceRouter;

@@ -9,6 +9,7 @@ const adminRouter = require("./routes/adminRoutes");
 const siteRouter = require("./routes/siteRoutes");
 const employeeRouter = require("./routes/employeeRoutes");
 const attendanceRouter = require("./routes/attendanceRoutes");
+const cashRouter = require("./routes/cashRoutes");
 const refreshRouter = require("./routes/refreshRoutes");
 
 app.use(credentials);
@@ -28,6 +29,7 @@ app.use("/admin", adminRouter);
 app.use("/site", siteRouter);
 app.use("/employee", employeeRouter);
 app.use("/attendance", attendanceRouter);
+app.use("/cash", cashRouter);
 app.use("/refresh", refreshRouter);
 
 let PORT = process.env.PORT || 8000;

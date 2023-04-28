@@ -69,16 +69,16 @@ exports.read = async (er_no, month, year) => {
     }
 }
 
-exports.getReport = async (month, year) => {
+exports.getReport = async (fromDate, toDate) => {
     const query = `
     SELECT 
     EA.er_no, ED.name, ED.rate, EA.date, EA.attendance, EA.site_code, EA.time, EA.advance, EA.remarks, EA.food, EA.travelling
     FROM 
     emp_attendance AS EA JOIN emp_details AS ED 
     ON EA.er_no = ED.er_no 
-    WHERE monthname(EA.date) = ? AND year(EA.date) = ?
+    WHERE EA.date BETWEEN ? AND ?
     ORDER BY EA.er_no ASC, EA.date ASC`;
-    const response = await queryExecuter(query, [month, year]);
+    const response = await queryExecuter(query, [fromDate, toDate]);
     if(response.status){
         if(response.data === undefined){
             response.message = "No Data Found";
@@ -89,3 +89,46 @@ exports.getReport = async (month, year) => {
         return response;
     }
 }
+
+exports.readAttendanceAdmin = async (date) => {
+    const query = `
+    SELECT 
+    EA.er_no, ED.name, ED.rate, EA.date, EA.attendance, EA.site_code, EA.time, EA.advance, EA.remarks, EA.food, EA.travelling, EA.marked_by
+    FROM 
+    emp_attendance AS EA JOIN emp_details AS ED 
+    ON EA.er_no = ED.er_no 
+    WHERE EA.date = ?
+    ORDER BY EA.er_no ASC, EA.date ASC`;
+    const response = await queryExecuter(query, [date]);
+    if(response.status){
+        if(response.data === undefined){
+            response.message = "No Data Found";
+        }
+        return response;
+    }
+    else{
+        return response;
+    }
+}
+
+exports.readAttendanceSupervisor = async (date, marked_by) => {
+    const query = `
+    SELECT 
+    EA.er_no, ED.name, ED.rate, EA.date, EA.attendance, EA.site_code, EA.time, EA.advance, EA.remarks, EA.food, EA.travelling, EA.marked_by
+    FROM 
+    emp_attendance AS EA JOIN emp_details AS ED 
+    ON EA.er_no = ED.er_no 
+    WHERE EA.date = ? AND EA.marked_by = ?
+    ORDER BY EA.er_no ASC, EA.date ASC`;
+    const response = await queryExecuter(query, [date, marked_by]);
+    if(response.status){
+        if(response.data === undefined){
+            response.message = "No Data Found";
+        }
+        return response;
+    }
+    else{
+        return response;
+    }
+}
+

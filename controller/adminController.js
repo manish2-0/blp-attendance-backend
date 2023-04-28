@@ -41,15 +41,16 @@ exports.login = async (req, res) => {
         const response = await admin.login(admin_id, password);
         if (response.status) {
             if (response.check) {
-                const refreshTokenExpire = 10;
+                const refreshTokenExpire = process.env.COOKIE_EXPIRE_TIME_HOURS;
                 const refreshToken = token.generateRefreshToken(admin_id);
                 const accessToken = token.generateAccessToken(admin_id);
                 let now = new Date();
                 const createdAt = date.format(now, 'YYYY-MM-DD HH:mm:ss');
-                const expiryAt = date.format(date.addMinutes(now, +refreshTokenExpire), 'YYYY-MM-DD HH:mm:ss');
+                const expiryAt = date.format(date.addHours(now, +refreshTokenExpire), 'YYYY-MM-DD HH:mm:ss');
                 const saveToken = await refresh.saveRefresh(admin_id, refreshToken, createdAt, expiryAt);
+                // res.cookie('refreshJwt', refreshToken, { httpOnly: true });
                 res.cookie('refreshJwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: process.env.COOKIE_EXPIRE_TIME_HOURS * 60 * 60 * 1000 });
-                // res.cookie('refreshJwt', refreshToken, { httpOnly: true});
+
                 const userRole = response.data[0].role;
                 if (saveToken) {
                     res.status(200).json({ status: true, accessToken: accessToken, message: response.message, role: userRole });
@@ -81,13 +82,15 @@ exports.logout = async (req, res) => {
         const findRefresh = await refresh.checkRefresh(refreshToken);
         if (!findRefresh) {
             // res.clearCookie('refreshJwt', { httpOnly: true });
-            res.clearCookie('refreshJwt', { httpOnly: true, sameSite: 'None', secure: true, maxAge: process.env.COOKIE_EXPIRE_TIME_HOURS * 60 * 60 * 1000 });
+            res.cookie('refreshJwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: process.env.COOKIE_EXPIRE_TIME_HOURS * 60 * 60 * 1000 });
+
             res.status(200).json({ status: true, message: "Admin Logged Out" });
         }
         else if (findRefresh) {
             const deleteToken = await refresh.deleteRefresh(refreshToken);
-            // res.clearCookie('refreshJwt', { httpOnly: true});
-            res.clearCookie('refreshJwt', { httpOnly: true, sameSite: 'None', secure: true, maxAge: process.env.COOKIE_EXPIRE_TIME_HOURS * 60 * 60 * 1000 });
+            // res.clearCookie('refreshJwt', { httpOnly: true });
+            res.cookie('refreshJwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: process.env.COOKIE_EXPIRE_TIME_HOURS * 60 * 60 * 1000 });
+
             res.status(200).json({ status: true, message: "Admin Logged Out" });
         }
     }
