@@ -72,7 +72,7 @@ exports.read = async (er_no, month, year) => {
 exports.getReport = async (fromDate, toDate) => {
     const query = `
     SELECT 
-    EA.er_no, ED.name, ED.rate, EA.date, EA.attendance, EA.site_code, EA.time, EA.advance, EA.remarks, EA.food, EA.travelling
+    EA.er_no, ED.name, ED.rate, EA.date, EA.attendance, EA.site_code, EA.time, EA.advance, EA.remarks, EA.food, EA.travelling, ED.pf, ED.esic, ED.pt
     FROM 
     emp_attendance AS EA JOIN emp_details AS ED 
     ON EA.er_no = ED.er_no 

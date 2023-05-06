@@ -17,6 +17,9 @@ exports.register = async (req, res) => {
     employeeDetails.supervisor = req.body.supervisor;
     employeeDetails.doj = req.body.doj;
     employeeDetails.dob = req.body.dob;
+    employeeDetails.pf = req.body.pf;
+    employeeDetails.esic = req.body.esic;
+    employeeDetails.pt = req.body.pt;
     let flag = true;
     let error = "Please Enter All Details";
     if (!employeeDetails.name) {
@@ -66,6 +69,9 @@ exports.update = async (req, res) => {
     employeeDetails.supervisor = req.body.supervisor;
     employeeDetails.doj = req.body.doj;
     employeeDetails.dob = req.body.dob;
+    employeeDetails.pf = req.body.pf;
+    employeeDetails.esic = req.body.esic;
+    employeeDetails.pt = req.body.pt;
 
     const check = await employee.ernoCheck(er_no);
     if (check) {

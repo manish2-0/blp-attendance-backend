@@ -12,7 +12,7 @@ async function generateERNO(){
 
 exports.register = async (employeeDetails) => {
     const er_no = await generateERNO();
-    const qry = `INSERT INTO emp_details (er_no, name, rate, aadhar, pan, designation, address, contact, bank_name, acc_no, ifsc, bank_branch, third_person, supervisor, doj, dob) VALUES ('${er_no}','${employeeDetails.name}','${employeeDetails.rate}','${employeeDetails.aadhar}','${employeeDetails.pan}','${employeeDetails.designation}','${employeeDetails.address}','${employeeDetails.contact}','${employeeDetails.bank_name}','${employeeDetails.acc_no}','${employeeDetails.ifsc}','${employeeDetails.bank_branch}','${employeeDetails.third_person}','${employeeDetails.supervisor}','${employeeDetails.doj}','${employeeDetails.dob}')`;
+    const qry = `INSERT INTO emp_details (er_no, name, rate, aadhar, pan, designation, address, contact, bank_name, acc_no, ifsc, bank_branch, third_person, supervisor, doj, dob, pf, esic, pt) VALUES ('${er_no}','${employeeDetails.name}','${employeeDetails.rate}','${employeeDetails.aadhar}','${employeeDetails.pan}','${employeeDetails.designation}','${employeeDetails.address}','${employeeDetails.contact}','${employeeDetails.bank_name}','${employeeDetails.acc_no}','${employeeDetails.ifsc}','${employeeDetails.bank_branch}','${employeeDetails.third_person}','${employeeDetails.supervisor}','${employeeDetails.doj}','${employeeDetails.dob}','${employeeDetails.pf}','${employeeDetails.esic}','${employeeDetails.pt}')`;
     const resp = await queryExecuter(qry);
     if(resp.status){
         return true;
@@ -23,8 +23,8 @@ exports.register = async (employeeDetails) => {
 }
 
 exports.updateEmployee = async (er_no, employeeDetails) => {
-    const query = "UPDATE emp_details SET name = ?, rate = ?, pan = ?, designation = ?, address = ?, contact = ?, bank_name = ?, acc_no = ?, ifsc = ?, bank_branch = ?, third_person = ?, supervisor = ?, doj = ?, dob = ? WHERE er_no = ?";
-    const response = await queryExecuter(query, [employeeDetails.name, employeeDetails.rate, employeeDetails.pan, employeeDetails.designation, employeeDetails.address, employeeDetails.contact, employeeDetails.bank_name, employeeDetails.acc_no, employeeDetails.ifsc, employeeDetails.bank_branch, employeeDetails.third_person, employeeDetails.supervisor, employeeDetails.doj, employeeDetails.dob,  er_no]);
+    const query = "UPDATE emp_details SET name = ?, rate = ?, pan = ?, designation = ?, address = ?, contact = ?, bank_name = ?, acc_no = ?, ifsc = ?, bank_branch = ?, third_person = ?, supervisor = ?, doj = ?, dob = ?, pf = ?, esic = ?, pt = ? WHERE er_no = ?";
+    const response = await queryExecuter(query, [employeeDetails.name, employeeDetails.rate, employeeDetails.pan, employeeDetails.designation, employeeDetails.address, employeeDetails.contact, employeeDetails.bank_name, employeeDetails.acc_no, employeeDetails.ifsc, employeeDetails.bank_branch, employeeDetails.third_person, employeeDetails.supervisor, employeeDetails.doj, employeeDetails.dob, employeeDetails.pf, employeeDetails.esic, employeeDetails.pt, er_no]);
     if(response.status){
         return true;
     }
