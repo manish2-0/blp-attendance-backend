@@ -4,10 +4,10 @@ const date = require('date-and-time');
 exports.register = async (attendanceDetails) => {
     const qry = `INSERT INTO emp_attendance (date, er_no, attendance, site_code, time, advance, remarks, food, travelling, marked_by) VALUES ('${attendanceDetails.date}','${attendanceDetails.er_no}','${attendanceDetails.attendance}','${attendanceDetails.site_code}','${attendanceDetails.time}','${attendanceDetails.advance}','${attendanceDetails.remarks}','${attendanceDetails.food}','${attendanceDetails.travelling}','${attendanceDetails.marked_by}')`;
     const resp = await queryExecuter(qry);
-    if(resp.status){
+    if (resp.status) {
         return true;
     }
-    else{
+    else {
         return false;
     }
 }
@@ -15,15 +15,15 @@ exports.register = async (attendanceDetails) => {
 exports.attendanceCheck = async (er_no, date) => {
     const query = "SELECT sr_no FROM emp_attendance WHERE er_no = ? AND date = ?";
     const response = await queryExecuter(query, [er_no, date]);
-    if(response.status){
-        if(response.data === undefined){
+    if (response.status) {
+        if (response.data === undefined) {
             return true;
         }
-        else{
+        else {
             return false;
         }
     }
-    else{
+    else {
         return false;
     }
 }
@@ -31,15 +31,15 @@ exports.attendanceCheck = async (er_no, date) => {
 exports.checkAttendanceExist = async (er_no, date) => {
     const query = "SELECT sr_no FROM emp_attendance WHERE er_no = ? AND date = ?";
     const response = await queryExecuter(query, [er_no, date]);
-    if(response.status){
-        if(response.data !== undefined){
+    if (response.status) {
+        if (response.data !== undefined) {
             return true;
         }
-        else{
+        else {
             return false;
         }
     }
-    else{
+    else {
         return false;
     }
 }
@@ -47,10 +47,10 @@ exports.checkAttendanceExist = async (er_no, date) => {
 exports.updateAttendance = async (attendanceDetails) => {
     const query = "UPDATE emp_attendance SET attendance = ?, site_code = ?, time = ?, advance = ?, remarks = ?, food = ?, travelling = ?, marked_by = ? WHERE er_no = ? AND date = ?";
     const response = await queryExecuter(query, [attendanceDetails.attendance, attendanceDetails.site_code, attendanceDetails.time, attendanceDetails.advance, attendanceDetails.remarks, attendanceDetails.food, attendanceDetails.travelling, attendanceDetails.marked_by, attendanceDetails.er_no, attendanceDetails.date]);
-    if(response.status){
+    if (response.status) {
         return true;
     }
-    else{
+    else {
         return false;
     }
 }
@@ -58,13 +58,13 @@ exports.updateAttendance = async (attendanceDetails) => {
 exports.read = async (er_no, month, year) => {
     const query = "SELECT * FROM emp_attendance WHERE er_no = ? AND monthname(date) = ? AND year(date) = ? ORDER BY date ASC";
     const response = await queryExecuter(query, [er_no, month, year]);
-    if(response.status){
-        if(response.data === undefined){
+    if (response.status) {
+        if (response.data === undefined) {
             response.message = "No Attendance Found";
         }
         return response;
     }
-    else{
+    else {
         return response;
     }
 }
@@ -79,13 +79,13 @@ exports.getReport = async (fromDate, toDate) => {
     WHERE EA.date BETWEEN ? AND ?
     ORDER BY EA.er_no ASC, EA.date ASC`;
     const response = await queryExecuter(query, [fromDate, toDate]);
-    if(response.status){
-        if(response.data === undefined){
+    if (response.status) {
+        if (response.data === undefined) {
             response.message = "No Data Found";
         }
         return response;
     }
-    else{
+    else {
         return response;
     }
 }
@@ -100,13 +100,13 @@ exports.readAttendanceAdmin = async (date) => {
     WHERE EA.date = ?
     ORDER BY EA.er_no ASC, EA.date ASC`;
     const response = await queryExecuter(query, [date]);
-    if(response.status){
-        if(response.data === undefined){
+    if (response.status) {
+        if (response.data === undefined) {
             response.message = "No Data Found";
         }
         return response;
     }
-    else{
+    else {
         return response;
     }
 }
@@ -114,20 +114,20 @@ exports.readAttendanceAdmin = async (date) => {
 exports.readAttendanceSupervisor = async (date, marked_by) => {
     const query = `
     SELECT 
-    EA.er_no, ED.name, ED.rate, EA.date, EA.attendance, EA.site_code, EA.time, EA.advance, EA.remarks, EA.food, EA.travelling, EA.marked_by
+    EA.er_no, ED.name, ED.rate,ED.designation, EA.date, EA.attendance, EA.site_code, EA.time, EA.advance, EA.remarks, EA.food, EA.travelling, EA.marked_by
     FROM 
     emp_attendance AS EA JOIN emp_details AS ED 
     ON EA.er_no = ED.er_no 
     WHERE EA.date = ? AND EA.marked_by = ?
     ORDER BY EA.er_no ASC, EA.date ASC`;
     const response = await queryExecuter(query, [date, marked_by]);
-    if(response.status){
-        if(response.data === undefined){
+    if (response.status) {
+        if (response.data === undefined) {
             response.message = "No Data Found";
         }
         return response;
     }
-    else{
+    else {
         return response;
     }
 }
