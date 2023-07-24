@@ -51,9 +51,9 @@ exports.readCashAdmin = async (date) => {
     }
 }
 
-exports.readCashSupervisor = async (date, marked_by) => {
-    const query = `SELECT * FROM cash_labour WHERE date = ? AND marked_by = ? ORDER BY date ASC`;
-    const response = await queryExecuter(query, [date, marked_by]);
+exports.readCashSupervisor = async (fromDate, toDate, marked_by) => {
+    const query = `SELECT * FROM cash_labour WHERE date BETWEEN ? AND ? AND marked_by = ? ORDER BY date ASC`;
+    const response = await queryExecuter(query, [fromDate, toDate, marked_by]);
     if(response.status){
         if(response.data === undefined){
             response.message = "No Data Found";
@@ -64,6 +64,20 @@ exports.readCashSupervisor = async (date, marked_by) => {
         return response;
     }
 }
+
+// exports.readCashSupervisor = async (date, marked_by) => {
+//     const query = `SELECT * FROM cash_labour WHERE date = ? AND marked_by = ? ORDER BY date ASC`;
+//     const response = await queryExecuter(query, [date, marked_by]);
+//     if(response.status){
+//         if(response.data === undefined){
+//             response.message = "No Data Found";
+//         }
+//         return response;
+//     }
+//     else{
+//         return response;
+//     }
+// }
 
 exports.cashIdCheck = async (sr_no) => {
     const query = "SELECT sr_no FROM cash_labour WHERE sr_no = ?";

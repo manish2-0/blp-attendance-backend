@@ -165,15 +165,19 @@ exports.getCashAdmin = async (req, res) => {
 }
 
 exports.getCashSupervisor = async (req, res) => {
-    const date = req.body.date;
+    const fromDate = req.body.from;
+    const toDate = req.body.to;
     const marked_by = req.admin_id;
     let flag = true;
-    let error = "Please Enter Date";
-    if (!date) {
+    let error = "Please Enter Both Dates";
+    if (!fromDate) {
+        flag = false;
+    }
+    if (flag && !toDate) {
         flag = false;
     }
     if (flag) {
-        const cashes = await cash.readCashSupervisor(date, marked_by);
+        const cashes = await cash.readCashSupervisor(fromDate, toDate, marked_by);
         if (cashes.status) {
             if (cashes.data === undefined) {
                 res.status(200).json({ status: true, message: cashes.message });
@@ -190,3 +194,30 @@ exports.getCashSupervisor = async (req, res) => {
         res.status(200).json({ status: false, message: error });
     } 
 }
+
+// exports.getCashSupervisor = async (req, res) => {
+//     const date = req.body.date;
+//     const marked_by = req.admin_id;
+//     let flag = true;
+//     let error = "Please Enter Date";
+//     if (!date) {
+//         flag = false;
+//     }
+//     if (flag) {
+//         const cashes = await cash.readCashSupervisor(date, marked_by);
+//         if (cashes.status) {
+//             if (cashes.data === undefined) {
+//                 res.status(200).json({ status: true, message: cashes.message });
+//             }
+//             else {
+//                 res.status(200).json({ status: true, data: cashes.data });
+//             }
+//         }
+//         else {
+//             res.status(200).json({ status: false, message: cashes.error });
+//         }
+//     }
+//     else {
+//         res.status(200).json({ status: false, message: error });
+//     } 
+// }
