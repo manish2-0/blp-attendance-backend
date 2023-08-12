@@ -65,7 +65,7 @@ exports.readAll = async () => {
 }
 
 exports.readAllPending = async () => {
-    const query = "SELECT * FROM site WHERE status = 'Ongoing'";
+    const query = "SELECT * FROM site WHERE status = 'Ongoing' ORDER BY site_code ASC";
     const response = await queryExecuter(query);
     if(response.status){
         if(response.data === undefined){
