@@ -10,6 +10,8 @@ attendanceRouter.put("/attendance-update", authToken, verifyRole(Roles.Admin, Ro
 
 attendanceRouter.post("/attendance-get", authToken, verifyRole(Roles.Admin, Roles.Supervisor), attendance.get);
 
+attendanceRouter.delete("/attendance-delete/:id", authToken, verifyRole(Roles.Admin), attendance.delete);
+
 attendanceRouter.post("/attendance-report", authToken, verifyRole(Roles.Admin), attendance.generateReport);
 
 attendanceRouter.post("/attendance-admin", authToken, attendance.getAttendanceAdmin);

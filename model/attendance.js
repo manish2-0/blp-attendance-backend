@@ -69,6 +69,17 @@ exports.read = async (er_no, month, year) => {
     }
 }
 
+exports.deleteAttendance = async (id) => {
+    const query = `DELETE FROM emp_attendance WHERE sr_no = ?`;
+    const response = await queryExecuter(query, [id]);
+    if(response.status){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 exports.getReport = async (fromDate, toDate) => {
     const query = `
     SELECT 

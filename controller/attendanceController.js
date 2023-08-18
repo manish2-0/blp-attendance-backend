@@ -162,6 +162,17 @@ exports.get = async (req, res) => {
     }
 }
 
+exports.delete = async (req, res) => {
+    const id = req.params.id;
+    const response = await attendance.deleteAttendance(id);
+    if (response) {
+        res.status(200).json({ status: true, message: "Entry deleted Successfully" })
+    }
+    else {
+        res.status(200).json({ status: false, message: "Something Went Wrong" });
+    }
+}
+
 exports.generateReport = async (req, res) => {
     const fromDate = req.body.from;
     const toDate = req.body.to;
