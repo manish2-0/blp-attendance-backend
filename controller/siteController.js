@@ -1,14 +1,23 @@
 const site = require("../model/site");
 
 exports.register = async (req, res) => {
-    const siteName = req.body.name;
+    const details = {};
+
+    details.siteName = req.body.name;
+    details.customer = req.body.customer;
+    details.designer = req.body.designer;
+    details.supervisor = req.body.supervisor;
+    details.address = req.body.address;
+    details.date = req.body.date;
+
     let flag = true;
     let error = "Please Enter Site Name";
-    if (!siteName) {
+
+    if (!details.siteName) {
         flag = false;
     }
     if (flag) {
-        const response = await site.register(siteName);
+        const response = await site.register(details);
         if (response) {
             res.status(200).json({ status: true, message: "Site Registered Successfully" })
         }
@@ -23,8 +32,15 @@ exports.register = async (req, res) => {
 
 exports.update = async (req, res) => {
     const { site_code } = req.params;
+
     const siteName = req.body.name;
     const status = req.body.status;
+    const customer = req.body.customer;
+    const designer = req.body.designer;
+    const supervisor = req.body.supervisor;
+    const address = req.body.address;
+    const date = req.body.date;
+
     let flag = true;
     let error = "Please Enter All Details";
     if (!siteName) {
@@ -35,8 +51,8 @@ exports.update = async (req, res) => {
     }
     if (flag) {
         const check = await site.siteCodeCheck(site_code);
-        if(check){
-            const response = await site.updateSite(siteName, status, site_code);
+        if (check) {
+            const response = await site.updateSite(siteName, status, site_code, customer, designer, supervisor, address, date);
             if (response) {
                 res.status(200).json({ status: true, message: "Site Updated Successfully" });
             }
@@ -44,7 +60,7 @@ exports.update = async (req, res) => {
                 res.status(200).json({ status: false, message: "Something Went Wrong" });
             }
         }
-        else{
+        else {
             res.status(200).json({ status: false, message: "Invalid Site Code" });
         }
     }
