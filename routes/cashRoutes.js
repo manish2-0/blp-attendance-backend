@@ -14,6 +14,6 @@ cashRouter.post("/cash-admin", authToken, cash.getCashAdmin);
 
 cashRouter.post("/cash-supervisor", authToken, cash.getCashSupervisor);
 
-cashRouter.post("/cash-delete/:id", authToken, verifyRole(Roles.Admin), cash.deleteCash);
+cashRouter.delete("/cash-delete/:id", authToken, verifyRole(Roles.Admin), cash.deleteCash);
 
 module.exports = cashRouter;
