@@ -90,7 +90,7 @@ exports.update = async (req, res) => {
     }
     if (flag) {
         const check = await cash.cashIdCheck(sr_no);
-        if(check){
+        if (check) {
             const response = await cash.updateCash(sr_no, cashDetails);
             if (response) {
                 res.status(200).json({ status: true, message: "Cash updated Successfully" })
@@ -99,7 +99,7 @@ exports.update = async (req, res) => {
                 res.status(200).json({ status: false, message: "Something Went Wrong" });
             }
         }
-        else{
+        else {
             res.status(200).json({ status: false, message: "Invalid srno" });
         }
     }
@@ -192,7 +192,19 @@ exports.getCashSupervisor = async (req, res) => {
     }
     else {
         res.status(200).json({ status: false, message: error });
-    } 
+    }
+}
+
+
+exports.deleteCash = async (req, res) => {
+    const id = req.params.id;
+    const response = await cash.deleteCashAttendance(id);
+    if (response) {
+        res.status(200).json({ status: true, message: "Entry deleted Successfully" })
+    }
+    else {
+        res.status(200).json({ status: false, message: "Something Went Wrong" });
+    }
 }
 
 // exports.getCashSupervisor = async (req, res) => {
